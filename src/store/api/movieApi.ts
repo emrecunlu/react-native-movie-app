@@ -1,5 +1,5 @@
 import { MovieListCategory } from "@/utils/enums";
-import { MovieResult } from "@/utils/types";
+import { MovieDetail, MovieResult } from "@/utils/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const api_key = process.env.EXPO_PUBLIC_API_KEY as string;
@@ -18,7 +18,16 @@ export const movieApi = createApi({
         },
       }),
     }),
+    getMovieDetailById: builder.query<MovieDetail, string>({
+      query: (movieId) => ({
+        url: "movie/" + movieId,
+        params: {
+          api_key,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetMoviesByListCategoryQuery } = movieApi;
+export const { useGetMoviesByListCategoryQuery, useGetMovieDetailByIdQuery } =
+  movieApi;

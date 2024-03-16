@@ -49,6 +49,8 @@ const Layout = () => {
               headerShown: false,
             }}
           />
+
+          <Stack.Screen name="movie/[id]" options={{ headerShown: true }} />
         </Stack>
 
         <StatusBar style="inverted" />
