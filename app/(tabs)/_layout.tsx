@@ -1,6 +1,7 @@
 import colors from "@/utils/constants/colors";
 import { Tabs } from "expo-router";
 import { Feather } from "@expo/vector-icons";
+import { Text } from "react-native";
 
 const Layout = () => {
   return (
@@ -10,12 +11,20 @@ const Layout = () => {
         tabBarStyle: {
           backgroundColor: colors.background,
           borderTopColor: colors.border,
-          borderTopWidth: 1,
+          borderTopWidth: 1.5,
           height: 100,
         },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: "600",
+        tabBarLabel({ children, focused }) {
+          return (
+            <Text
+              className="font-roboto-medium text-[12px]"
+              style={{
+                color: focused ? colors.border : colors.muted,
+              }}
+            >
+              {children}
+            </Text>
+          );
         },
         tabBarIcon({ focused, size }) {
           const routeName = route.name;

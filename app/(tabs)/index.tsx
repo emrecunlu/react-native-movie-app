@@ -1,22 +1,42 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
-import { router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import SearchInput from "@/components/SearchInput";
+import PopularMoviesCarousel from "@/components/movies/PopularMoviesCarousel";
+import { useGetMoviesByListCategoryQuery } from "@/store/api/movieApi";
+import { MovieListCategory } from "@/utils/enums";
+import size from "@/utils/constants/size";
+import MoviesCategoryList from "@/components/movies/MoviesCategoryList";
 
 const HomeTab = () => {
+  const { isLoading, data, error } = useGetMoviesByListCategoryQuery(
+    MovieListCategory.Popular
+  );
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
-    <View className="flex-1 items-center justify-center">
-      <TouchableOpacity
-        className="border border-zinc-400 px-8 py-2 rounded-full"
-        onPress={() =>
-          router.push({
-            params: { id: 1 },
-            pathname: "movie/[id]",
-          })
-        }
-      >
-        <Text className="text-white">Go to Movie</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView
+      edges={["top", "left", "right"]}
+      style={{ paddingHorizontal: size.screenPaddingX }}
+      className="flex-1"
+    >
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text className="font-poppins-semibold text-lg text-white pt-4">
+          What do you want to watch?
+        </Text>
+
+        <View className="mt-6 mb-8">
+          <SearchInput />
+        </View>
+
+        <PopularMoviesCarousel movies={data?.results.slice(0, 10) ?? []} />
+
+        <MoviesCategoryList />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
