@@ -23,7 +23,7 @@ const HomeTab = () => {
       style={{ paddingHorizontal: size.screenPaddingX }}
       className="flex-1"
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
         <Text className="font-poppins-semibold text-lg text-white pt-4">
           What do you want to watch?
         </Text>

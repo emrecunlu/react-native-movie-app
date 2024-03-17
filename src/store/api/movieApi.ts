@@ -1,5 +1,11 @@
 import { MovieListCategory } from "@/utils/enums";
-import { Author, Movie, MovieDetail, MovieResult } from "@/utils/types";
+import {
+  Author,
+  CastList,
+  Movie,
+  MovieDetail,
+  MovieResult,
+} from "@/utils/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const api_key = process.env.EXPO_PUBLIC_API_KEY as string;
@@ -7,7 +13,7 @@ const api_key = process.env.EXPO_PUBLIC_API_KEY as string;
 export const movieApi = createApi({
   reducerPath: "movieApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://api.themoviedb.org/3/",
+    baseUrl: "https://api.themoviedb.org/3/movie",
   }),
   endpoints: (builder) => ({
     getMoviesByListCategory: builder.query<
@@ -15,7 +21,7 @@ export const movieApi = createApi({
       MovieListCategory
     >({
       query: (category) => ({
-        url: `movie/${category}`,
+        url: `/${category}`,
         params: {
           api_key,
         },
@@ -23,7 +29,7 @@ export const movieApi = createApi({
     }),
     getMovieDetailById: builder.query<MovieDetail, string>({
       query: (movieId) => ({
-        url: "movie/" + movieId,
+        url: "/" + movieId,
         params: {
           api_key,
         },
@@ -31,7 +37,15 @@ export const movieApi = createApi({
     }),
     getMovieReviewsById: builder.query<MovieResult<Author[]>, string>({
       query: (movieId) => ({
-        url: "movie/" + movieId + "/reviews",
+        url: "/" + movieId + "/reviews",
+        params: {
+          api_key,
+        },
+      }),
+    }),
+    getMovieCastsById: builder.query<CastList, string>({
+      query: (movieId) => ({
+        url: "/" + movieId + "/credits",
         params: {
           api_key,
         },
@@ -44,4 +58,5 @@ export const {
   useGetMoviesByListCategoryQuery,
   useGetMovieDetailByIdQuery,
   useGetMovieReviewsByIdQuery,
+  useGetMovieCastsByIdQuery,
 } = movieApi;

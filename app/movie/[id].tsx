@@ -14,7 +14,6 @@ import colors from "@/utils/constants/colors";
 import { Redirect, useLocalSearchParams } from "expo-router";
 import { useGetMovieDetailByIdQuery } from "@/store/api/movieApi";
 import MovieDetails from "@/components/movies/MovieDetails";
-import AboutMovieTab from "@/components/movies/tabs/AboutMovieTab";
 import ReviewsTab from "@/components/movies/tabs/ReviewsTab";
 import CastTab from "@/components/movies/tabs/CastTab";
 import Tab from "@/components/Tab";
@@ -54,7 +53,7 @@ const MovieDetailPage = () => {
       />
 
       {data && (
-        <ScrollView className="flex-1">
+        <ScrollView bounces={false} className="flex-1">
           <View className="relative">
             <Image
               className="w-full h-64 object-cover rounded-bl-3xl rounded-br-3xl"
@@ -102,7 +101,7 @@ const MovieDetailPage = () => {
                   <ReviewsTab movieId={id} />
                 </Tab.Item>
                 <Tab.Item value={2} title="Cast">
-                  <CastTab />
+                  <CastTab movieId={id} />
                 </Tab.Item>
               </Tab>
             </View>
