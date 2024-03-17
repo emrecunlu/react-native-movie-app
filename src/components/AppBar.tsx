@@ -23,7 +23,7 @@ const AppBar = ({ title, actions }: Props) => {
           <Feather name="chevron-left" color={colors.light} size={28} />
         </TouchableOpacity>
       )}
-      <Text className="mx-auto text-[#ECECEC] font-montserrat-semibold text-lg">
+      <Text className="mx-auto text-[#ECECEC] font-montserrat-semibold text-base">
         {title}
       </Text>
       {actions && <View className="flex-row items-center">{actions()}</View>}

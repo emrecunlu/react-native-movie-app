@@ -1,9 +1,9 @@
 import {
   View,
-  Image,
-  ActivityIndicator,
   Text,
+  ActivityIndicator,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import React from "react";
 import { useGetMovieCastsByIdQuery } from "@/store/api/movieApi";
@@ -13,41 +13,42 @@ type Props = {
 };
 
 const CastTab = ({ movieId }: Props) => {
-  const { isLoading, data, error } = useGetMovieCastsByIdQuery(movieId);
-
-  console.log(error);
+  const { data, isLoading } = useGetMovieCastsByIdQuery(movieId);
 
   return (
-    (isLoading && <ActivityIndicator />) ||
-    (data && (
-      <View className="flex-row flex-wrap space-y-8 items-center">
-        {data.cast
-          .filter((cast) => !!cast.profile_path)
-          .map((cast, index) => (
-            <View
-              className="w-1/2 px-4"
-              style={{
-                alignItems: index % 2 === 0 ? "flex-start" : "flex-end",
-              }}
-              key={cast.id}
-            >
-              <TouchableOpacity className="space-y-3">
-                <Image
-                  className="w-28 h-28 rounded-full object-cover"
-                  key={cast.id}
-                  source={{
-                    uri: "https://image.tmdb.org/t/p/w500" + cast.profile_path,
+    <View className="justify-center items-center">
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <View className="flex-wrap flex-row space-y-6 items-center">
+          {data?.cast
+            .filter((cast) => cast.profile_path)
+            .map((cast, index) => (
+              <View key={cast.id} className="w-1/2">
+                <TouchableOpacity
+                  className="items-center space-y-6 px-4"
+                  style={{
+                    marginLeft: (index + 1) % 2 === 0 ? "auto" : 0,
+                    marginRight: (index + 1) % 2 !== 0 ? "auto" : 0,
                   }}
-                />
+                >
+                  <Image
+                    className="w-32 h-32 object-cover rounded-full"
+                    source={{
+                      uri:
+                        "https://image.tmdb.org/t/p/w300" + cast.profile_path,
+                    }}
+                  />
 
-                <Text className="font-poppins-medium text-white text-base text-center">
-                  {cast.original_name}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-      </View>
-    ))
+                  <Text className="text-white font-poppins-medium">
+                    {cast.original_name}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+        </View>
+      )}
+    </View>
   );
 };
 

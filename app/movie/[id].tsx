@@ -91,7 +91,7 @@ const MovieDetailPage = () => {
             />
 
             <View className="mt-12">
-              <Tab tab={tab}>
+              <Tab onChange={(value) => setTab(value as number)} tab={tab}>
                 <Tab.Item value={0} title="About Movie">
                   <Text className="font-poppins text-white leading-6">
                     {data.overview}
