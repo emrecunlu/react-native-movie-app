@@ -19,7 +19,9 @@ import {
 import colors from "@/utils/constants/colors";
 import { StatusBar } from "expo-status-bar";
 import { Provider } from "react-redux";
-import { store } from "@/store";
+import { persistor, store } from "@/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { ActivityIndicator, View } from "react-native";
 
 const Layout = () => {
   const { dark } = useTheme();
@@ -40,29 +42,31 @@ const Layout = () => {
 
   return (
     <Provider store={store}>
-      <ThemeProvider
-        value={{
-          colors: {
-            ...DefaultTheme.colors,
-            background: colors.background,
-          },
-          dark,
-        }}
-      >
-        <Stack
-          screenOptions={{
-            headerShown: false,
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider
+          value={{
+            colors: {
+              ...DefaultTheme.colors,
+              background: colors.background,
+            },
+            dark,
           }}
         >
-          <Stack.Screen
-            name="(tabs)"
-            options={{
+          <Stack
+            screenOptions={{
               headerShown: false,
             }}
-          />
-        </Stack>
-        <StatusBar style="inverted" />
-      </ThemeProvider>
+          >
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack>
+          <StatusBar style="inverted" />
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 };

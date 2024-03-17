@@ -17,6 +17,9 @@ import MovieDetails from "@/components/movies/MovieDetails";
 import ReviewsTab from "@/components/movies/tabs/ReviewsTab";
 import CastTab from "@/components/movies/tabs/CastTab";
 import Tab from "@/components/Tab";
+import { Movie, MovieDetail } from "@/utils/types";
+import { add, remove, useBookmarks } from "@/store/features/bookmark";
+import { store } from "@/store";
 
 type Params = {
   id: string;
@@ -29,9 +32,16 @@ const MovieDetailPage = () => {
 
   if (!id) return <Redirect href="/" />;
 
-  console.log(id);
-
   const { data, isLoading } = useGetMovieDetailByIdQuery(id);
+  const { movies } = useBookmarks();
+
+  const addBookmarks = (movie: MovieDetail) => {
+    if (movies.indexOf(movie) === -1) {
+      store.dispatch(add(movie));
+    } else {
+      store.dispatch(remove(movie.id));
+    }
+  };
 
   if (isLoading) {
     return (
@@ -46,7 +56,7 @@ const MovieDetailPage = () => {
       <AppBar
         title="Detail"
         actions={() => (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => data && addBookmarks(data)}>
             <Feather name="bookmark" size={26} color={colors.light} />
           </TouchableOpacity>
         )}

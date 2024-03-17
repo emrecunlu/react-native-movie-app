@@ -33,11 +33,11 @@ const MoviesCategoryList = () => {
         <Tab.Item value={MovieListCategory.Popular} title="Popular" />
       </Tab>
 
-      <View className="flex-row items-center  flex-wrap gap-x-4">
-        {isFetching ? (
-          <ActivityIndicator />
-        ) : (
-          data?.results.map((movie) => (
+      {isFetching ? (
+        <ActivityIndicator className="mx-auto" />
+      ) : (
+        <View className="flex-wrap flex-row  gap-x-4 mb-6">
+          {data?.results.map((movie) => (
             <TouchableOpacity
               onPress={() =>
                 router.push({
@@ -60,9 +60,9 @@ const MoviesCategoryList = () => {
                 }}
               />
             </TouchableOpacity>
-          ))
-        )}
-      </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 };
