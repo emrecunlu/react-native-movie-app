@@ -30,6 +30,8 @@ const MovieDetailPage = () => {
 
   if (!id) return <Redirect href="/" />;
 
+  console.log(id);
+
   const { data, isLoading } = useGetMovieDetailByIdQuery(id);
 
   if (isLoading) {
@@ -53,7 +55,7 @@ const MovieDetailPage = () => {
 
       {data && (
         <ScrollView className="flex-1">
-          <View>
+          <View className="relative">
             <Image
               className="w-full h-64 object-cover rounded-bl-3xl rounded-br-3xl"
               source={{
@@ -61,18 +63,25 @@ const MovieDetailPage = () => {
               }}
             />
 
-            <View className="flex-row px-8 -mt-24 items-start">
-              <Image
-                className="w-32 h-48 rounded-2xl"
-                source={{
-                  uri: "https://image.tmdb.org/t/p/w500" + data.poster_path,
-                }}
-              />
-
-              <Text className="font-montserrat-semibold text-white text-lg flex-1 px-4 mt-28">
-                {data.title}
+            <View className="absolute right-5 bottom-5 bg-[#252836] opacity-90 rounded-lg px-3 py-2 flex-row items-center space-x-2">
+              <Feather name="star" color="#FF8700" size={18} />
+              <Text className="font-montserrat-semibold text-[#FF8700]">
+                {data.vote_average.toFixed(1)}
               </Text>
             </View>
+          </View>
+
+          <View className="flex-row px-8 -mt-24 items-start">
+            <Image
+              className="w-32 h-48 rounded-2xl"
+              source={{
+                uri: "https://image.tmdb.org/t/p/w500" + data.poster_path,
+              }}
+            />
+
+            <Text className="font-montserrat-semibold text-white text-lg flex-1 px-4 mt-28">
+              {data.title}
+            </Text>
           </View>
 
           <View className="px-8 mt-8">
@@ -88,13 +97,9 @@ const MovieDetailPage = () => {
                   <Text className="font-poppins text-white leading-6">
                     {data.overview}
                   </Text>
-
-                  <Text className="font-poppins text-white mt-2 text-right">
-                    {data.genres.map((x) => x.name).join(", ")}
-                  </Text>
                 </Tab.Item>
                 <Tab.Item value={1} title="Reviews">
-                  <ReviewsTab />
+                  <ReviewsTab movieId={id} />
                 </Tab.Item>
                 <Tab.Item value={2} title="Cast">
                   <CastTab />

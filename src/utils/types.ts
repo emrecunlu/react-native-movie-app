@@ -1,7 +1,7 @@
-export interface MovieResult {
+export interface MovieResult<T> {
   dates: Dates;
   page: number;
-  results: Movie[];
+  results: T;
   total_pages: number;
   total_results: number;
 }
@@ -77,4 +77,21 @@ interface Productioncompany {
 interface Genre {
   id: number;
   name: string;
+}
+
+export interface Author {
+  author: string;
+  author_details: Authordetails;
+  content: string;
+  created_at: string;
+  id: string;
+  updated_at: string;
+  url: string;
+}
+
+export interface Authordetails {
+  name: string;
+  username: string;
+  avatar_path?: string;
+  rating?: number;
 }

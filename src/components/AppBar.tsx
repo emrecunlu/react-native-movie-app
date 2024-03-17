@@ -13,7 +13,7 @@ type Props = {
 const AppBar = ({ title, actions }: Props) => {
   return (
     <View
-      className="flex-row w-full justify-between items-center h-20"
+      className="flex-row w-full justify-between items-center h-16"
       style={{
         paddingHorizontal: size.screenPaddingX,
       }}

@@ -1,5 +1,5 @@
 import { MovieListCategory } from "@/utils/enums";
-import { MovieDetail, MovieResult } from "@/utils/types";
+import { Author, Movie, MovieDetail, MovieResult } from "@/utils/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const api_key = process.env.EXPO_PUBLIC_API_KEY as string;
@@ -10,7 +10,10 @@ export const movieApi = createApi({
     baseUrl: "https://api.themoviedb.org/3/",
   }),
   endpoints: (builder) => ({
-    getMoviesByListCategory: builder.query<MovieResult, MovieListCategory>({
+    getMoviesByListCategory: builder.query<
+      MovieResult<Movie[]>,
+      MovieListCategory
+    >({
       query: (category) => ({
         url: `movie/${category}`,
         params: {
@@ -26,8 +29,19 @@ export const movieApi = createApi({
         },
       }),
     }),
+    getMovieReviewsById: builder.query<MovieResult<Author[]>, string>({
+      query: (movieId) => ({
+        url: "movie/" + movieId + "/reviews",
+        params: {
+          api_key,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetMoviesByListCategoryQuery, useGetMovieDetailByIdQuery } =
-  movieApi;
+export const {
+  useGetMoviesByListCategoryQuery,
+  useGetMovieDetailByIdQuery,
+  useGetMovieReviewsByIdQuery,
+} = movieApi;
