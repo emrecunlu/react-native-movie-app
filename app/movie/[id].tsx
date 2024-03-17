@@ -1,20 +1,30 @@
-import { View, Text, ActivityIndicator, Image, Dimensions } from "react-native";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+  Text,
+} from "react-native";
 import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import AppBar from "@/components/AppBar";
+import { Feather } from "@expo/vector-icons";
+import colors from "@/utils/constants/colors";
 import { Redirect, useLocalSearchParams } from "expo-router";
 import { useGetMovieDetailByIdQuery } from "@/store/api/movieApi";
-import colors from "@/utils/constants/colors";
-import { Feather } from "@expo/vector-icons";
+import MovieDetails from "@/components/movies/MovieDetails";
 
-type PageParams = {
+type Params = {
   id: string;
 };
 
-const { width, height } = Dimensions.get("screen");
-
 const MovieDetailPage = () => {
-  const { id } = useLocalSearchParams<PageParams>();
+  const { id } = useLocalSearchParams<Params>();
 
-  const { isError, data, isLoading } = useGetMovieDetailByIdQuery(id ?? "");
+  if (!id) return <Redirect href="/" />;
+
+  const { data, isLoading } = useGetMovieDetailByIdQuery(id);
 
   if (isLoading) {
     return (
@@ -24,30 +34,52 @@ const MovieDetailPage = () => {
     );
   }
 
-  if (data) {
-    return (
-      <View className="flex-1">
-        <View className="relative">
-          <Image
-            className="w-full h-64 rounded-bl-3xl rounded-br-3xl"
-            source={{
-              uri: "https://image.tmdb.org/t/p/w500" + data.backdrop_path,
-            }}
-            resizeMode="cover"
-          />
+  return (
+    <SafeAreaView className="flex-1">
+      <AppBar
+        title="Detail"
+        actions={() => (
+          <TouchableOpacity>
+            <Feather name="bookmark" size={26} color={colors.light} />
+          </TouchableOpacity>
+        )}
+      />
 
-          <View className="absolute bottom-5 right-5 flex-row items-center space-x-2 rounded-2xl bg-[#252836] p-2">
-            <Feather name="star" size={18} />
-            <Text className="text-green-600 font-montserrat-semibold">
-              {data.vote_average.toFixed(1)}
-            </Text>
+      {data && (
+        <ScrollView className="flex-1">
+          <View>
+            <Image
+              className="w-full h-64 object-cover rounded-bl-3xl rounded-br-3xl"
+              source={{
+                uri: "https://image.tmdb.org/t/p/w500" + data.backdrop_path,
+              }}
+            />
+
+            <View className="flex-row px-8 -mt-24 items-start">
+              <Image
+                className="w-32 h-48 rounded-2xl"
+                source={{
+                  uri: "https://image.tmdb.org/t/p/w500" + data.poster_path,
+                }}
+              />
+
+              <Text className="font-montserrat-semibold text-white text-lg flex-1 px-4 mt-28">
+                {data.title}
+              </Text>
+            </View>
           </View>
-        </View>
-      </View>
-    );
-  }
 
-  return null;
+          <View className="px-8 mt-8">
+            <MovieDetails
+              runtime={data.runtime}
+              relaseYear={new Date(data.release_date).getFullYear()}
+              genre={data.genres[0].name}
+            />
+          </View>
+        </ScrollView>
+      )}
+    </SafeAreaView>
+  );
 };
 
 export default MovieDetailPage;

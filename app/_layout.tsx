@@ -1,5 +1,5 @@
-import React from "react";
-import { Stack } from "expo-router";
+import React, { useEffect, useRef } from "react";
+import { Stack, router, usePathname } from "expo-router";
 import {
   ThemeProvider,
   DefaultTheme,
@@ -12,7 +12,10 @@ import {
   Poppins_600SemiBold,
 } from "@expo-google-fonts/poppins";
 import { Roboto_500Medium } from "@expo-google-fonts/roboto";
-import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
+import {
+  Montserrat_600SemiBold,
+  Montserrat_500Medium,
+} from "@expo-google-fonts/montserrat";
 import colors from "@/utils/constants/colors";
 import { StatusBar } from "expo-status-bar";
 import { Provider } from "react-redux";
@@ -26,8 +29,12 @@ const Layout = () => {
     Poppins_500Medium,
     Poppins_600SemiBold,
     Montserrat_600SemiBold,
+    Montserrat_500Medium,
     Roboto_500Medium,
   });
+
+  const pathame = usePathname();
+  const ref = useRef(null);
 
   if (!fontsLoaded) return null;
 
@@ -42,17 +49,18 @@ const Layout = () => {
           dark,
         }}
       >
-        <Stack>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
           <Stack.Screen
             name="(tabs)"
             options={{
               headerShown: false,
             }}
           />
-
-          <Stack.Screen name="movie/[id]" options={{ headerShown: true }} />
         </Stack>
-
         <StatusBar style="inverted" />
       </ThemeProvider>
     </Provider>

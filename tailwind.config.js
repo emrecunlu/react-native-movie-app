@@ -9,6 +9,7 @@ module.exports = {
         "poppins-semibold": "Poppins_600SemiBold",
         "roboto-medium": "Roboto_500Medium",
         "montserrat-semibold": "Montserrat_600SemiBold",
+        "montserrat-medium": "Montserrat_500Medium",
       },
     },
   },
