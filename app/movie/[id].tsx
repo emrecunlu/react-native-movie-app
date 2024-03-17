@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppBar from "@/components/AppBar";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import colors from "@/utils/constants/colors";
 import { Redirect, useLocalSearchParams } from "expo-router";
 import { useGetMovieDetailByIdQuery } from "@/store/api/movieApi";
@@ -17,7 +17,7 @@ import MovieDetails from "@/components/movies/MovieDetails";
 import ReviewsTab from "@/components/movies/tabs/ReviewsTab";
 import CastTab from "@/components/movies/tabs/CastTab";
 import Tab from "@/components/Tab";
-import { Movie, MovieDetail } from "@/utils/types";
+import { MovieDetail } from "@/utils/types";
 import { add, remove, useBookmarks } from "@/store/features/bookmark";
 import { store } from "@/store";
 
@@ -36,10 +36,10 @@ const MovieDetailPage = () => {
   const { movies } = useBookmarks();
 
   const addBookmarks = (movie: MovieDetail) => {
-    if (movies.indexOf(movie) === -1) {
-      store.dispatch(add(movie));
-    } else {
+    if (movies.find((e) => e.id === movie.id)) {
       store.dispatch(remove(movie.id));
+    } else {
+      store.dispatch(add(movie));
     }
   };
 
@@ -57,7 +57,15 @@ const MovieDetailPage = () => {
         title="Detail"
         actions={() => (
           <TouchableOpacity onPress={() => data && addBookmarks(data)}>
-            <Feather name="bookmark" size={26} color={colors.light} />
+            {(data && movies.find((e) => e.id === data.id) && (
+              <Ionicons name="bookmark" size={26} color={colors.light} />
+            )) || (
+              <Ionicons
+                name="bookmark-outline"
+                size={26}
+                color={colors.light}
+              />
+            )}
           </TouchableOpacity>
         )}
       />

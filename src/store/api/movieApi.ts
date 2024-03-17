@@ -5,6 +5,7 @@ import {
   Movie,
   MovieDetail,
   MovieResult,
+  MovieSearchDetail,
 } from "@/utils/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -13,7 +14,7 @@ const api_key = process.env.EXPO_PUBLIC_API_KEY as string;
 export const movieApi = createApi({
   reducerPath: "movieApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://api.themoviedb.org/3/movie",
+    baseUrl: "https://api.themoviedb.org/3",
   }),
   endpoints: (builder) => ({
     getMoviesByListCategory: builder.query<
@@ -21,7 +22,7 @@ export const movieApi = createApi({
       MovieListCategory
     >({
       query: (category) => ({
-        url: `/${category}`,
+        url: `/movie/${category}`,
         params: {
           api_key,
         },
@@ -29,7 +30,7 @@ export const movieApi = createApi({
     }),
     getMovieDetailById: builder.query<MovieDetail, string>({
       query: (movieId) => ({
-        url: "/" + movieId,
+        url: "/movie/" + movieId,
         params: {
           api_key,
         },
@@ -37,7 +38,7 @@ export const movieApi = createApi({
     }),
     getMovieReviewsById: builder.query<MovieResult<Author[]>, string>({
       query: (movieId) => ({
-        url: "/" + movieId + "/reviews",
+        url: "/movie/" + movieId + "/reviews",
         params: {
           api_key,
         },
@@ -45,8 +46,17 @@ export const movieApi = createApi({
     }),
     getMovieCastsById: builder.query<CastList, string>({
       query: (movieId) => ({
-        url: "/" + movieId + "/credits",
+        url: "/movie/" + movieId + "/credits",
         params: {
+          api_key,
+        },
+      }),
+    }),
+    getMoviesByTerm: builder.query<MovieResult<MovieSearchDetail[]>, string>({
+      query: (query) => ({
+        url: "/search/movie",
+        params: {
+          query,
           api_key,
         },
       }),
@@ -59,4 +69,6 @@ export const {
   useGetMovieDetailByIdQuery,
   useGetMovieReviewsByIdQuery,
   useGetMovieCastsByIdQuery,
+  useGetMoviesByTermQuery,
+  useLazyGetMoviesByTermQuery,
 } = movieApi;

@@ -56,6 +56,10 @@ export interface MovieDetail {
   vote_count: number;
 }
 
+export interface MovieSearchDetail extends Omit<MovieDetail, "genres"> {
+  genre_ids: number[];
+}
+
 interface Spokenlanguage {
   english_name: string;
   iso_639_1: string;
@@ -129,4 +133,9 @@ export interface Cast {
   character: string;
   credit_id: string;
   order: number;
+}
+
+export interface MovieGenre {
+  id: number;
+  title: string;
 }

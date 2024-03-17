@@ -16,7 +16,6 @@ const bookmark = createSlice({
   initialState,
   reducers: {
     add: (state, { payload }: PayloadAction<MovieDetail>) => {
-      console.log(payload);
       state.movies.push(payload);
     },
     remove: (state, { payload }: PayloadAction<number>) => {
