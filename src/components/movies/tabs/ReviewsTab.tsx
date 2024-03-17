@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const TabMenu = () => {
+const ReviewsTab = () => {
   return (
     <View>
-      <Text>TabMenu</Text>
+      <Text>ReviewsTab</Text>
     </View>
   );
 };
 
-export default TabMenu;
+export default ReviewsTab;

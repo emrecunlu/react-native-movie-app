@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   Text,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppBar from "@/components/AppBar";
 import { Feather } from "@expo/vector-icons";
@@ -14,12 +14,18 @@ import colors from "@/utils/constants/colors";
 import { Redirect, useLocalSearchParams } from "expo-router";
 import { useGetMovieDetailByIdQuery } from "@/store/api/movieApi";
 import MovieDetails from "@/components/movies/MovieDetails";
+import AboutMovieTab from "@/components/movies/tabs/AboutMovieTab";
+import ReviewsTab from "@/components/movies/tabs/ReviewsTab";
+import CastTab from "@/components/movies/tabs/CastTab";
+import Tab from "@/components/Tab";
 
 type Params = {
   id: string;
 };
 
 const MovieDetailPage = () => {
+  const [tab, setTab] = useState<number>(0);
+
   const { id } = useLocalSearchParams<Params>();
 
   if (!id) return <Redirect href="/" />;
@@ -75,6 +81,26 @@ const MovieDetailPage = () => {
               relaseYear={new Date(data.release_date).getFullYear()}
               genre={data.genres[0].name}
             />
+
+            <View className="mt-12">
+              <Tab tab={tab}>
+                <Tab.Item value={0} title="About Movie">
+                  <Text className="font-poppins text-white leading-6">
+                    {data.overview}
+                  </Text>
+
+                  <Text className="font-poppins text-white mt-2 text-right">
+                    {data.genres.map((x) => x.name).join(", ")}
+                  </Text>
+                </Tab.Item>
+                <Tab.Item value={1} title="Reviews">
+                  <ReviewsTab />
+                </Tab.Item>
+                <Tab.Item value={2} title="Cast">
+                  <CastTab />
+                </Tab.Item>
+              </Tab>
+            </View>
           </View>
         </ScrollView>
       )}
